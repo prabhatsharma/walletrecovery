@@ -75,8 +75,9 @@ exports.decryptPresaleKey = function(presaleJson, presalepass) {
     //Get the initialization vector from the encrypted seed. First 16 bytes (32 hex encoded chars)
     var iv = hexToCryptoJS(presaleJson.encseed.substr(0,32));   
     
-    //Get the ciphertext from encrypted seed. Next 80 bytes (160 hex encoded chars)
-    var cipherText = hexToCryptoJS(presaleJson.encseed.substr(32,160)); 
+    //Get the ciphertext from encrypted seed. Next X bytes (X * 2 hex encoded chars)
+    var cipherText = hexToCryptoJS(presaleJson.encseed.substr(32, presaleJson.encseed.length - 32)); 
+
     
     //Create the derived key from presalepassword
     var derivedKey = pbkdf2.pbkdf2Sync(presalepass, presalepass, 2000, 16, 'sha256')
